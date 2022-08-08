@@ -1,0 +1,99 @@
+{% load static %}
+{% url 'cards.list' as cardsList_url %}
+{% url 'login' as login_url %}
+{% url 'signup' as signup_url %}
+{% url 'cards.like' user.id as mycards_url %}
+{% url 'lessons.list' as lessons_url %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>
+    {% block title %}
+    L . J . T . T
+    {% endblock %}
+  </title>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand mx-auto mb-0 h1" href="{% url 'home' %}">L . J . T . T</a>
+    </div>
+    <div class="container-fluid">
+      <div class="mx-auto col-lg-6">
+        <div class="p-2 rounded-3 mb-2">
+          <ul class="nav nav-pills nav-fill gap-2 p-1 small bg-white border rounded-5 shadow-sm" id="pillNav2"
+            role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link {% if request.path == cardsList_url %} active {%endif%} rounded-5"
+                href="{% url 'cards.list' %}">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+
+            <li class="nav-item" role="presentation">
+              <a class="nav-link {% if request.path == mycards_url %} active {%endif%} rounded-5"
+                href="{% url 'cards.like' user.id %}">My Cards</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link {% if request.path == lessons_url %} active {%endif%} rounded-5"
+                href="{% url 'lessons.list' %}">Lessons</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link rounded-5" href="{% url 'logout' %}">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item" role="presentation">
+              <a class="nav-link {% if request.path == login_url %} active {%endif%} rounded-5"
+                href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link {% if request.path == signup_url %} active {%endif%} rounded-5"
+                href="{% url 'signup' %}">Signup</a>
+            </li>
+            {% endif %}
+            <!-- <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-5" id="profile-tab2" data-bs-toggle="tab" type="button" role="tab" aria-selected="false" style="cursor: pointer;">Profile</button>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid my-5">
+    {% if user.is_authenticated %}
+    <p>Welcome <strong>{{user.first_name}} {{user.last_name}}</strong></p>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+<!-- <footer class="py-3 my-4">
+       <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        </ul> 
+        <p class="text-center text-muted">D E Y S  © <text id="year">2021</text> Company, Inc</p>
+      </footer> -->
+<script>
+  var dt = new Date();
+  // document.write("getFullYear() : " + dt.getFullYear() );
+  document.getElementById("year").innerHTML = dt.getFullYear().toString()
+
+</script>
+
+</html>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Delete Card - {{ object }}
+{% endblock %}
+{% block content %}
+{% if user.is_authenticated %}
+{% if user.id == card.user.id %}
+  <div class="my-5 text-center">
+      <h1>Delete Card</h1>
+      <form method="post">{% csrf_token %}
+      <p>Are you sure you want to delete <strong>"{{ object }}"</strong> ?</p>
+      <p>This action can't be undone</p>
+      <input type="submit" value="Confirm" class="btn btn-sm btn-danger">
+      <!-- <button class="btn btn-secondary" onclick="history.back()">Go Back</button> -->
+      <a href="javascript:history.back()" class="btn btn-sm btn-secondary" >Go Back</a>
+      </form>
+  </div>
+  {% else %}
+  <h1 class="custom-text-center" >
+      Invalid Request.. <br>
+      <a href="{% url 'cards.list' %}" class="btn btn-outline-dark" > Click Me 😇 to redirect..</a>
+  </h1>
+  {%endif%}
+{%endif%}
+{% endblock %}

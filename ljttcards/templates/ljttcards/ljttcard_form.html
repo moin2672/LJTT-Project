@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create / Update Card
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+{% if user.is_superuser %}
+<div class="my-5 text-center">
+    <h1>Create / Update Card</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h1>Add / Update Card:</h1>
+
+        {% if form.errors %}
+        <div class="alert alert-danger my-5">
+            {% if form.errors.imageData %}
+            ImageData - {{form.errors.imageData.as_text}} <br>
+            {% endif %}
+            {% if form.errors.lesson %}
+            Lesson - {{form.errors.lesson.as_text}} <br>
+            {% endif %}
+            {% if form.errors.jp_word %}
+            Jp Wprd - {{form.errors.jp_word.as_text}} <br>
+            {% endif %}
+            {% if form.errors.en_word %}
+            En Wprd - {{form.errors.en_word.as_text}} <br>
+            {% endif %}
+            {% if form.errors.en_prounounciation %}
+            En Pro. - {{form.errors.en_prounounciation.as_text}} <br>
+            {% endif %}
+            {% if form.errors.ta_word %}
+            Ta Word - {{form.errors.ta_word.as_text}} <br>
+            {% endif %}
+            {% if form.errors.ta_prounounciation %}
+            En Pro. - {{form.errors.ta_prounounciation.as_text}} <br>
+            {% endif %}
+            {% if form.errors.hint %}
+            Hint#   - {{form.errors.hint.as_text}}
+            {% endif %} 
+        </div>
+        {% endif %}
+        <form method="POST">{% csrf_token %}
+            {{form.as_p}}
+            <button class="btn btn-sm btn-success my-5" type="submit">Submit</button>
+            <!-- <a href="{% url 'cards.list' %}" class="btn btn-sm btn-secondary">Cancel</a> -->
+            <a href="javascript:history.back()" class="btn btn-sm btn-secondary" >Go Back</a>
+        </form>
+        
+        
+    </div>
+    
+    <div class="col-md-3"></div>
+</div>
+
+
+{% else %}
+<h1 class="custom-text-center" >
+    Invalid Request.. <br>
+    <a href="{% url 'cards.list' %}" class="btn btn-outline-dark" > Click Me 😇 to redirect..</a>
+</h1>
+{% endif %}
+{% endif %}
+
+<style>
+    ul.errorlist {
+    display: none;
+}
+</style>
+{% endblock %}

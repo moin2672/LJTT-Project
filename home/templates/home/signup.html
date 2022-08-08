@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+L J T T - Login
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            {% if form.errors %}
+            <div class="alert alert-danger my-5">
+                {% if form.errors.username %}
+                Username - {{form.errors.username.as_text}} <br>
+                {% endif %}
+                {% if form.errors.first_name %}
+                First name - {{form.errors.first_name.as_text}} <br>
+                {% endif %}
+                {% if form.errors.last_name %}
+                Last name - {{form.errors.last_name.as_text}} <br>
+                {% endif %}
+                {% if form.errors.email %}
+                Email address - {{form.errors.email.as_text}} <br>
+                {% endif %}
+                {% if form.errors.password1 %}
+                Password - {{form.errors.password1.as_text}} <br>
+                {% endif %}
+                {% if form.errors.password2 %}
+                Password Confirmation - {{form.errors.password2.as_text}} <br>
+                {% endif %}
+            </div>
+            {% endif %}
+            
+               <form method="POST">{% csrf_token %}
+                {{form.as_p}}
+                <input class="btn btn-sm btn-primary" type="submit" value="Sign Up" >
+               </form>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+   <script>
+    var all = document.getElementsByTagName("span");
+        for(var i = 0, max = all.length; i < max; i++){
+            if(all[i].innerHTML!=''){
+                all[i].classList.add("text-muted")
+                all[i].classList.add("fs-6")
+                // all[i].classList.add("text-danger")
+                // fw-light
+            }
+        }
+</script>
+   <style>
+    ul.errorlist {
+    display: none;
+}
+ul{
+display: none;
+}
+</style>
+
+{% endblock %}

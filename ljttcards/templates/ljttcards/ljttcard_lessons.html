@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+L.J.T.T - Lessons
+{% endblock %}
+
+{% block content %}
+<h1 class="my-5 text-center">L.J.T.T - Lessons</h1>
+<br>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        {% if lesson_list %}
+        {% for lessonName in lesson_list %}
+        <div class="list-group">
+            <a href="{% url 'lessons.cards' lessonName.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center h4">{{lessonName}}
+            </a>
+          </div>
+          {% endfor %}
+          {% else %}
+    <p class="text-center">Lessons will be added soon..</p>
+          {% endif %}
+    </div>
+    <div class="col-md-3"></div>   
+{% endblock %}

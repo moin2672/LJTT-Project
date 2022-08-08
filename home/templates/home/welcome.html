@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+L J T T - Login
+{% endblock %}
+
+
+{% block content %}
+<div class="text-center">
+    <p class="text-muted">D E Y S</p>
+    <h1>Welcome to L J T T!</h1>
+    <h3>Learning Japanese Through Tamil</h3>
+    <p>Today is {{today}}</p>
+    <a href="{% url 'cards.list' %}" class="btn btn-primary">Check out these smart cards!</a>
+</div>    
+{% endblock %}

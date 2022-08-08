@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}
+  L J T T - Cards
+{% endblock %}
+
+
+{% block content %}
+<h1 class="my-5 text-center">L . J . T . T &nbsp;&nbsp;Cards</h1>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    {% if cards %}
+    {% for card in cards %}
+    <div class="col">
+        <div class="card shadow-sm">
+            <div style="height: 225px;">
+                <img class="img-fluid" src="{{card.imageData}}" alt="{{card.jp_word}}" style="height: 225px;width: 100%;">
+            </div>
+            <div class="card-header bg-secondary text-white">
+                <div class="float-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16" style="color: #ffeb3b">
+                        <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+                      </svg> {{card.total_likes}}
+                </div>
+                <h4>{{card.jp_word}}</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{{card.en_word}}</li>
+                <li class="list-group-item">{{card.ta_word}}</li>
+            </ul>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <a onclick="myFunction('{{card.id}}')" id="anslink{{card.id}}"
+                            class="float-start btn btn-sm btn-primary">Show Ans!</a>
+                    </div>
+                    <div class="col text-center">
+                        <a onclick="copyLink('{{card.id}}')" onmouseout="changeColor('{{card.id}}')" class="btn btn-sm btn-secondary"
+                            id="cpylnk{{card.id}}">Copy Link</a>
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'cards.detail' pk=card.id %}" class="float-end btn btn-sm btn-primary">View</a>
+                    </div>
+                </div>
+
+
+            </div>
+            <ul class="list-group list-group-flush" id="showhidecard{{card.id}}" style="display: none;">
+                <li class="list-group-item text-success" style="background-color:#66d3a163">{{card.en_pronounciation}}</li>
+                <li class="list-group-item text-success" style="background-color:#66d3a163">{{card.ta_pronounciation}}</li>
+                <!-- <li class="list-group-item text-success" style="background-color:#66d3a1b0">{{card.ta_pronounciation}}</li> -->
+            </ul>
+            <div class="card-footer text-center" style="background-color:#ffd57840; ;">
+                <a class="btn btn-sm btn-danger" href="{% url 'lessons.cards' card.lesson.id %}">{{card.lesson|truncatechars:40}}</a>
+            </div>
+            {% if user.is_authenticated %}
+            {% if user.id == 1 %}
+            <div class="d-flex justify-content-between align-items-center p-3">
+                <div class="btn-group">
+                  <!-- <a href="{% url 'cards.detail' pk=card.id  %}" class="btn btn-sm btn-outline-secondary">View</a> -->
+                  <a href="{% url 'cards.update' pk=card.id  %}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                </div>
+                <small class="text-muted">{{card.created}}</small>
+              </div>
+              {% endif %}
+              {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-center">Lessons will be added soon..</p>
+          {% endif %}
+</div>
+
+<!-- <script>
+        function showHideCard() {
+        this.classList.toggle('hideCard');
+        this.classList.toggle('showCard');
+        }
+        // document.querySelector('#showhidecard').addEventListener('click', showHideCard);
+        document.getElementById('#showhidecard').style.display='block'
+        </script> -->
+
+<script>
+    function myFunction(id) {
+        var x = document.getElementById('showhidecard'+id.toString());
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            document.getElementById('anslink'+id.toString()).innerHTML = 'Hide Ans!';
+        } else {
+            x.style.display = "none";
+            document.getElementById('anslink'+id.toString()).innerHTML = 'Show Ans!';
+        }
+    }
+
+    function changeColor(id) {
+        // document.getElementById('cpylnk'+id.toString()).classList.replace('btn-secondary','btn-info')
+        if (document.getElementById('cpylnk' + id.toString()).innerHTML == 'Copied!') {
+            document.getElementById('cpylnk' + id.toString()).classList.replace('btn-info', 'btn-secondary');
+            document.getElementById('cpylnk' + id.toString()).innerHTML = 'Copy Link'
+        }
+    }
+
+    function copyLink(id) {
+        /* Get the text field */
+        // var copyText = "http://127.0.0.1:8000/ljtt/cards/"+id.toString();
+
+        document.getElementById('cpylnk' + id.toString()).classList.replace('btn-info', 'btn-secondary');
+
+        linkstring = window.location.href
+        if ([linkstring.length - 1] === "/") {
+            linkstring += id.toString()
+        } else {
+            linkstring += "/" + id.toString()
+        }
+        navigator.clipboard.writeText(linkstring);
+        /* Select the text field */
+        // copyText.select();
+        // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        // navigator.clipboard.writeText(copyText.value);
+
+        /* Alert the copied text */
+
+        // 'cpylnk'+id.toString()
+        // setInterval(changeColor(id), 2000);
+        // setTimeout(document.getElementById('cpylnk'+id.toString()).classList.replace('btn-secondary','btn-info'), 3000)
+        // setInterval(document.getElementById('cpylnk'+id.toString()).classList.replace('btn-info','btn-secondary'), 1000);
+
+        // alert("Copied the text: " + linkstring);
+
+        document.getElementById('cpylnk' + id.toString()).classList.replace('btn-secondary', 'btn-info');
+        // alert(document.getElementById('cpylnk'+id.toString()).innerHTML)
+        document.getElementById('cpylnk' + id.toString()).innerHTML = 'Copied!'
+        
+    }
+
+</script>
+{% endblock %}

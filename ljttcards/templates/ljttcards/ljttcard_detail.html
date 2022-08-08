@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{card.jp_word}} - {{card.en_word}} - {{card.ta_word}}
+{% endblock %}
+
+{% block content %}
+{% if card %}
+<div class="p-5 mb-4 bg-dark text-white rounded-3">
+    <div class="mx-auto text-center mb-3">
+        <a class="btn btn-sm btn-info" href="{% url 'lessons.cards' card.lesson.id %}">{{card.lesson|truncatechars:40}}</a>
+    </div>
+    <div class="row mb-3">
+<div class="col-md-6 my-2 float-start">
+<a href="{% url 'cards.list' %}" class="btn btn-lg btn-outline-light">&lt; Back</a>
+</div>
+<div class="col-md-6 my-2">
+    {% if user.is_authenticated %}
+    <div class="float-end">
+        {% if liked %}
+        <form action="{% url 'like' pk=card.id %}" method="POST">{% csrf_token %}
+            <button class="btn btn-lg btn-outline-danger" type="submit" name="card_id" value="{{card.id}}">
+              <strong>-</strong> Remove from My Favourite Cards (Need Revision)
+            </button>
+        </form>
+        {% else %}
+        <form action="{% url 'like' pk=card.id %}" method="POST">{% csrf_token %}
+            <button class="btn btn-lg btn-outline-success" type="submit" name="card_id" value="{{card.id}}">
+              <strong>+</strong> Add to My Favourite Cards
+            </button>
+        </form>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'login' %}">Login</a> to create your own collection of Cards!! 
+    </div>
+    {% endif %}
+</div>
+    </div>
+    <div class="container-fluid">
+        <div class="float-end">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-heart-fill" viewBox="0 0 16 16" style="color: #ffeb3b">
+                <path d="M2 15.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v13.5zM8 4.41c1.387-1.425 4.854 1.07 0 4.277C3.146 5.48 6.613 2.986 8 4.412z"/>
+              </svg> {{total_likes}}
+        </div>
+        <h3 class="display-5 fw-bold">{{card.jp_word}}</h3>
+        <img src="{{card.imageData}}" class="img-fluid mb-3" alt="{{card.jp_word}}" title="{{card.jp_word}}"
+            width="100%">
+            <div class="alert alert-info" role="alert">
+                <h5>Pronounciation (English) : {{card.en_pronounciation}}</h5>
+            </div>
+        <div class="alert alert-info" role="alert">
+            <h5>Meaning (English) : {{card.en_word}}</h5>
+        </div>
+        <div class="alert alert-info" role="alert">
+            <h5>Pronounciation (Tamil) : {{card.ta_pronounciation}}</h5>
+        </div>
+        <div class="alert alert-info" role="alert">
+            <h5>Meaning (Tamil) : {{card.ta_word}}</h5>
+        </div>
+        
+        {% if card.hint %}
+        <p class="col-md-8 fs-4">Hints# </p>
+        {% endif %}
+
+    </div>
+</div>
+{% else %}
+<h1 class="custom-text-center" >
+    Invalid Request.. <br>
+    <a href="{% url 'cards.list' %}" class="btn btn-outline-dark" > Click Me 😇 to redirect..</a>
+</h1>
+{% endif %}
+{% endblock %}
